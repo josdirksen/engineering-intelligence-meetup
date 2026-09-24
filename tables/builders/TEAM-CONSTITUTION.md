@@ -95,6 +95,12 @@ Traps that flipped and why (one line):
 - Write performant code: no database queries or network calls inside loops
   when one batched call will do, no repeated work that can be done once, and
   no blocking I/O on a request path.
+- Before calling a change finished, check it against the specs (the task,
+  the story, the relevant design documents) and list each requirement in
+  your summary with how the change meets it.
+- When a requirement is unclear or specs contradict each other, ask before
+  you build. If nobody can answer, choose the option that best fits the
+  specs and state that choice and its reason in your summary.
 
 ### Rules from experience
 - Use UK English spelling in code (identifiers, database columns, API
