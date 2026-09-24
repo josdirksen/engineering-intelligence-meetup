@@ -92,6 +92,9 @@ Traps that flipped and why (one line):
 - Name variables, functions and files so the code explains itself. Do not
   add comments that explain what the code does; if code needs one, rename or
   simplify it instead.
+- Write performant code: no database queries or network calls inside loops
+  when one batched call will do, no repeated work that can be done once, and
+  no blocking I/O on a request path.
 
 ### Rules from experience
 - Use UK English spelling in code (identifiers, database columns, API
