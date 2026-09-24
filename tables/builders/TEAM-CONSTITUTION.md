@@ -11,124 +11,89 @@ Traps that flipped and why (one line):
 
 ## 1. Which parts does a harness for your team need?
 
-- Rules: the constitution below (spelling convention, banned libraries).
-- Context: a shared glossary of domain terms, so everyone and the assistant
-  use one word per concept.
-- Knowledge sources: the team wiki, project READMEs, harness files, Jira
-  stories.
-- Guardrails: dependency checks (licence, team bans) before a library is
-  added.
-- Review gates: passing tests and 80%+ coverage on new code before a change
-  is done.
+- Rules: this constitution.
+- Context: a glossary of domain terms, one word per concept.
+- Knowledge sources: wiki, project READMEs, harness files, Jira stories.
+- Guardrails: licence and ban checks before adding a dependency.
+- Review gates: passing tests, 80%+ coverage on new code.
 - Security: no leaked secrets, a security check on every change.
-- Connectors: a way for the assistant to read Jira and the wiki (not there
-  yet).
+- Connectors: assistant access to Jira and the wiki (not there yet).
 
 ## 2. Per part: why does it need to be said, and what do you expect to gain?
 
 ### Rules
-- Why: mixed UK/US spelling (`colour`/`color`) in code caused database
-  problems in mid-September 2026.
-- Expected gain: one spelling everywhere, so names in code, the database and
-  design documents match.
+- Why: mixed `colour`/`color` caused database problems (September 2026).
+- Expected gain: one spelling across code, database and design documents.
 
 ### Context (glossary)
-- Why: people with different native languages use different terms for the
-  same thing; the agreed terms only live in people's heads.
-- Expected gain: a written glossary the team and the assistant can check
-  names against.
+- Why: people with different languages use different terms; agreed terms
+  live only in people's heads.
+- Expected gain: a written glossary to check names against.
 
 ### Knowledge sources
-- Why: decisions live in the wiki, READMEs and Jira; an assistant that is not
-  pointed at them never reads them.
-- Expected gain: the assistant follows existing decisions instead of
-  re-deciding them.
+- Why: an assistant that is not pointed at our decisions never reads them.
+- Expected gain: existing decisions get followed, not re-decided.
 
 ### Guardrails
-- Why: PrimeNG changed its licence terms and is no longer allowed.
-- Expected gain: no dependency with an unwanted licence or a team ban gets
-  added.
+- Why: PrimeNG changed its licence terms.
+- Expected gain: no dependency with an unwanted licence or a team ban.
 
 ### Review gates
-- Why: parts of the code were poorly tested or had failing tests, and that
-  led to problems.
-- Expected gain: every change lands with passing tests, and new code is
-  covered to at least 80%.
+- Why: poorly tested parts and failing tests led to problems.
+- Expected gain: every change lands tested and green.
 
 ### Security
-- Why: code must not leak secret information or leave loopholes.
-- Expected gain: every change is checked for security problems before it
-  lands, and no secrets end up in code, logs or responses.
+- Why: code must not leak secrets or leave loopholes.
+- Expected gain: every change is security-checked before it lands.
 
 ### Connectors
-- Why: Jira stories hold the context per change, but there is no Jira MCP
-  connector.
+- Why: Jira stories hold the context per change; there is no Jira MCP.
 - Expected gain: the assistant can read the story behind a change.
 
 ## 3. Which existing tools and services could you already connect or pull into your harness?
 
-- Project READMEs: readable by the assistant today (in the repo).
-- Harness files: readable by the assistant today (in the repo).
-- Wiki: holds decisions and standards; not connected to the assistant yet.
-- Jira: holds stories; no MCP connector yet.
+- READMEs and harness files: in the repo, readable today.
+- Wiki: decisions and standards; not connected yet.
+- Jira: stories; no MCP connector yet.
 
 ## 4. The one thing you would put in place next week
 
-- Add a coverage check to our pipeline that fails a build when new code is
-  below 80% or any test fails.
+- A pipeline check that fails the build when any test fails or new code is
+  below 80% coverage.
 
 ---
 
 ## Rules for the assistant
 
-### Ground rules
-- Before changing code, read the project's `README.md` and the harness files
-  in the repo, and follow what they say.
+### Knowledge sources: read before changing code
 - Our decisions, standards and runbooks live in `../flowmetrics-wiki`. Read
   the relevant ones before you change code, and respect their `status` header.
-- Build only what the task asks for. No extra features, options, endpoints
-  or unrelated refactors; if you think something more is needed, name it in
-  your summary instead of building it.
-- Name variables, functions and files so the code explains itself. Do not
-  add comments that explain what the code does; if code needs one, rename or
-  simplify it instead.
-- Write performant code: no database queries or network calls inside loops
-  when one batched call will do, no repeated work that can be done once, and
-  no blocking I/O on a request path.
-- Before calling a change finished, check it against the specs (the task,
-  the story, the relevant design documents) and list each requirement in
-  your summary with how the change meets it.
-- When a requirement is unclear or specs contradict each other, ask before
-  you build. If nobody can answer, choose the option that best fits the
-  specs and state that choice and its reason in your summary.
-- Follow TypeScript best practices: the project type-checks with no errors,
-  no `any` (use `unknown` and narrow it), no `@ts-ignore`, no non-null
-  assertions (`!`), and do not loosen `tsconfig` or lint settings.
-- Program defensively: validate everything that comes from outside (request
-  input, config and environment values, responses from external services)
-  before using it, handle every error from an external call explicitly, and
-  never leave a `catch` block empty.
+- Read the project's `README.md` and the harness files in the repo, and
+  follow them.
+- Jira is not reachable; work from the task as given.
 
-### Rules from experience
-- Use UK English spelling in code (identifiers, database columns, API
-  fields, config keys) and in design documents: `colour`, `cancelled`,
-  `serialise`. (Mixed `colour`/`color` caused database problems, September
-  2026.)
-- Do not add or use PrimeNG. (PrimeNG changed its licence terms.)
-- A change is not finished until the full test suite runs and passes. Fix or
-  update tests your change breaks; do not skip or delete them. (Poorly tested
-  parts and failing tests led to problems.)
+### How to write code
+- Build only what the task asks for. No extra features, endpoints or
+  unrelated refactors; name anything else you think is needed in your summary.
+- Clear names instead of comments that explain what code does.
+- TypeScript: no type errors, no `any` (use `unknown`), no `@ts-ignore`, no
+  non-null `!`, do not loosen `tsconfig` or lint settings.
+- Defensive: validate all external input (requests, config, service
+  responses), handle every error from an external call, no empty `catch`.
+- Performant: no queries or network calls in loops when one batched call
+  will do, no blocking I/O on a request path.
+- Security: no secrets (keys, tokens, passwords, connection strings) in
+  code, config, logs, errors or responses; new endpoints and inputs must not
+  expose internal data or bypass authentication or validation.
+- UK English spelling in code and design documents: `colour`, `cancelled`,
+  `serialise`. (Mixed `colour`/`color` caused database problems, Sept 2026.)
+- Do not add PrimeNG. (Licence change.)
+- When something is unclear, ask. If nobody can answer, pick the option that
+  best fits the specs and state it with the reason in your summary.
+
+### Done means
+- The full test suite passes; broken tests are fixed, never skipped or
+  deleted. (Poorly tested parts and failing tests led to problems.)
 - New code has at least 80% test coverage. (Same origin.)
-- Never put secrets (passwords, API keys, tokens, connection strings) in
-  code, committed config, logs, error messages or responses.
-- Before calling a change finished, review it for security problems and
-  list what you checked and found in your summary. New endpoints and inputs
-  must not expose internal data or bypass existing authentication or
-  validation.
-
-### Knowledge sources
-- Project `README.md` files: project setup and conventions. In the repo.
-- Harness files: team rules, including this constitution. In the repo.
-- Team wiki: decisions and standards. For run 2, `../flowmetrics-wiki`.
-- Jira stories: requirements per change. Not reachable by the assistant yet;
-  ask the developer for the story if the task needs it.
+- Your summary lists each requirement from the specs and how the change
+  meets it, plus what you checked for security and what you found.
