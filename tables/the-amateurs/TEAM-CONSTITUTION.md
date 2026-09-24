@@ -82,6 +82,7 @@ decisions there before it changes code.
 - If you change an API, regenerate the OpenAPI documentation in the same
   change and never hand-edit the generated output. (Origin: API contract
   drift that CI now catches by regenerating docs.)
+- Don't use old or deprecated libraries. (Origin: security near miss with a risky dependency.)
 
 ### Knowledge sources
 
