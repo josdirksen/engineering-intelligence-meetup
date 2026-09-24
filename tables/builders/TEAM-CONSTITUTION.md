@@ -101,6 +101,13 @@ Traps that flipped and why (one line):
 - When a requirement is unclear or specs contradict each other, ask before
   you build. If nobody can answer, choose the option that best fits the
   specs and state that choice and its reason in your summary.
+- Follow TypeScript best practices: the project type-checks with no errors,
+  no `any` (use `unknown` and narrow it), no `@ts-ignore`, no non-null
+  assertions (`!`), and do not loosen `tsconfig` or lint settings.
+- Program defensively: validate everything that comes from outside (request
+  input, config and environment values, responses from external services)
+  before using it, handle every error from an external call explicitly, and
+  never leave a `catch` block empty.
 
 ### Rules from experience
 - Use UK English spelling in code (identifiers, database columns, API
