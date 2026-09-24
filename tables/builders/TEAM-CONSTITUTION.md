@@ -89,6 +89,9 @@ Traps that flipped and why (one line):
 - Build only what the task asks for. No extra features, options, endpoints
   or unrelated refactors; if you think something more is needed, name it in
   your summary instead of building it.
+- Name variables, functions and files so the code explains itself. Do not
+  add comments that explain what the code does; if code needs one, rename or
+  simplify it instead.
 
 ### Rules from experience
 - Use UK English spelling in code (identifiers, database columns, API
